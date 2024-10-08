@@ -1,0 +1,40 @@
+.icon-arrow-left,
+.icon-arrow-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  cursor: pointer;
+  color: #000;
+}
+
+.icon-arrow-left {
+  left: -30px;
+}
+
+.icon-arrow-right {
+  right: -30px;
+}
+
+.card.position-relative {
+  position: relative;
+}
+/* Dashboard.css */
+.sidebar {
+  height: 100vh; /* Full height */
+  position: fixed; /* Stay fixed on the left */
+  top: 0;
+  left: 0;
+  background-color: #343a40; /* Dark background */
+  padding: 1rem; /* Add some padding */
+  width: 280px; /* Adjust the width */
+  color: white;
+}
+
+.sidebar .dropdown-menu {
+  background-color: #343a40; /* Dropdown color matches sidebar */
+}
+
+.sidebar .form-control {
+  margin-bottom: 1rem;
+}
