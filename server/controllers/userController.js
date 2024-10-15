@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import User from "../models/userModels.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import generateToken from "../utils/generateToken.js";
@@ -22,7 +22,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   // Hash the password
   const saltRounds = parseInt(process.env.SALT_ROUNDS, 10) || 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const hashedPassword = await bcryptjs.hash(password, saltRounds);
 
   // Create a new user
   const newUser = new User({
@@ -61,7 +61,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   // If user exists
   if (existingUser) {
     // Compare provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(
+    const isPasswordValid = await bcryptjs.compare(
       password,
       existingUser.password
     );
