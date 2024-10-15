@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import Footer from "./Footer";
 
 function Welcome() {
   return (
@@ -18,6 +19,7 @@ function Welcome() {
         <div className="product-device box-shadow d-none d-md-block"></div>
         <div className="product-device product-device-2 box-shadow d-none d-md-block"></div>
       </div>
+      <Footer />
     </div>
   );
 }
