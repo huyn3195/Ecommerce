@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Welcome from "./components/ Welcome";
+import About from "./components/About";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Welcome />}></Route>
+          <Route path="/about" element={<About />}></Route>
         </Routes>
       </Router>
     </Fragment>

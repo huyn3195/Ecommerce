@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Header() {
+  const [bgColor, setBgColor] = useState("transparent");
+
+  // Define colors for the animation
+  const colors = [
+    "rgba(255, 255, 255, 0.9)",
+    "rgba(200, 200, 255, 0.9)",
+    "rgba(150, 255, 150, 0.9)",
+    "rgba(255, 200, 200, 0.9)",
+  ];
+
+  // State to keep track of the current color index
+  const [colorIndex, setColorIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+    }, 3000); // Change color every 3 seconds
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    setBgColor(colors[colorIndex]);
+  }, [colorIndex]);
+
   return (
-    <nav className="site-header sticky-top py-1">
+    <nav
+      className="site-header sticky-top py-1"
+      style={{ backgroundColor: bgColor, transition: "background-color 0.5s" }}
+    >
       <div className="container d-flex flex-column flex-md-row justify-content-between">
         <Link className="py-2" to="/">
           <svg
