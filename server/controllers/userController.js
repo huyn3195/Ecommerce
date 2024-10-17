@@ -6,25 +6,17 @@ import generateToken from "../utils/generateToken.js";
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
-
-  // Check for missing fields
   if (!username || !email || !password) {
     res.status(400);
     throw new Error("Please add all fields");
   }
-
-  // Check if the user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400).send("User already exists");
     return;
   }
-
-  // Hash the password
   const saltRounds = parseInt(process.env.SALT_ROUNDS, 10) || 10;
   const hashedPassword = await bcryptjs.hash(password, saltRounds);
-
-  // Create a new user
   const newUser = new User({
     username,
     email,
@@ -32,13 +24,8 @@ export const registerUser = asyncHandler(async (req, res) => {
   });
 
   try {
-    // Save the user to the database
     await newUser.save();
-
-    // Generate a token for the user
     generateToken(res, newUser._id);
-
-    // Respond with the created user data (excluding password)
     res.status(201).json({
       _id: newUser._id,
       username: newUser.username,
@@ -54,24 +41,14 @@ export const registerUser = asyncHandler(async (req, res) => {
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-
-  // Find the user by email
   const existingUser = await User.findOne({ email });
-
-  // If user exists
   if (existingUser) {
-    // Compare provided password with the hashed password in the database
     const isPasswordValid = await bcryptjs.compare(
       password,
       existingUser.password
     );
-
-    // If password is valid
     if (isPasswordValid) {
-      // Generate a token for the user
       const token = generateToken(res, existingUser._id);
-
-      // Respond with user data (excluding password)
       res.status(200).json({
         _id: existingUser._id,
         username: existingUser.username,
@@ -81,10 +58,10 @@ export const loginUser = asyncHandler(async (req, res) => {
       });
       return;
     } else {
-      res.status(401).send("Invalid credentials"); // Incorrect password
+      res.status(401).send("Invalid credentials");
     }
   } else {
-    res.status(404).send("User not found"); // No user with that email
+    res.status(404).send("User not found");
   }
 });
 
@@ -108,7 +85,7 @@ export const findUserById = asyncHandler(async (req, res) => {
     res.status(404).send("User not found");
   }
 });
-export const updatedUseById = asyncHandler(async (req, res) => {
+export const updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
     user.username = req.body.username || user.username;
@@ -123,5 +100,20 @@ export const updatedUseById = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404).send("User not found");
+  }
+});
+
+export const deletesUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    if (user.isAdmin) {
+      res.status(400);
+      throw new Error("Cannot delete admin user");
+    }
+    await User.deleteOne({ _id: user._id });
+    res.json({ message: "User removed" });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
   }
 });
