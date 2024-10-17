@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Welcome from "./components/ Welcome";
 import About from "./components/About";
-
+import Login from "./components/Login";
 function App() {
   return (
     <Fragment>
@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />}></Route>
           <Route path="/about" element={<About />}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Routes>
       </Router>
     </Fragment>
