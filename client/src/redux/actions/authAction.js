@@ -20,8 +20,10 @@ export const login = (email, password) => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok) {
+      const tokenExpirationTime = data.expiresIn; // ISO string from the server
       dispatch({ type: LOGIN_SUCCESS, payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("tokenExpirationTime", tokenExpirationTime); // Store token expiration ISO string
     } else {
       throw new Error(data.message || "Login failed");
     }
@@ -46,13 +48,32 @@ export const register = (username, email, password) => async (dispatch) => {
     });
     const data = await res.json();
     if (res.ok) {
+      const tokenExpirationTime = data.expiresIn; // ISO string from the server
       dispatch({ type: REGISTER_SUCCESS, payload: data });
       dispatch({ type: LOGIN_SUCCESS, payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("tokenExpirationTime", tokenExpirationTime); // Store token expiration ISO string
     } else {
       throw new Error(data.message || "Registration failed");
     }
   } catch (error) {
     dispatch({ type: REGISTER_FAILURE, payload: error.message });
+  }
+};
+
+export const checkTokenExpiration = () => (dispatch) => {
+  const tokenExpirationTime = localStorage.getItem("tokenExpirationTime");
+
+  if (tokenExpirationTime) {
+    const isExpired = Date.now() > Date.parse(tokenExpirationTime);
+
+    if (isExpired) {
+      console.log("Token expired. Logging out.");
+      dispatch(logout());
+    } else {
+      console.log("Token is still valid.");
+    }
+  } else {
+    console.log("No token expiration time found.");
   }
 };
