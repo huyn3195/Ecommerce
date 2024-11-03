@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import connectDB from "./config/db.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 
 // API Routes
 app.use("/user", userRoutes);
+app.use("/category", categoryRoutes);
 
 // Serve the React app for all other routes
 app.get("*", (req, res) => {
