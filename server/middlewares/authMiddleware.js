@@ -8,7 +8,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
+      req.user = await User.findById(decoded.userId).select("-password");
       next();
     } catch (err) {
       res.status(401);
@@ -21,6 +21,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 });
 
 const authAdmin = asyncHandler(async (req, res, next) => {
+  console.log("User in authAdmin:", req.user);
   if (req.user && req.user.isAdmin) {
     next();
   } else {

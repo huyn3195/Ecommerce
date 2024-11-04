@@ -47,9 +47,18 @@ export const listCategory = asyncHandler(async (req, res) => {
 export const readCategory = asyncHandler(async (req, res) => {
   try {
     const category = await Category.findOne({ _id: req.params.id });
-    res.json(readCategory);
+    res.json(category);
   } catch (error) {
     console.log(error);
     return res;
+  }
+});
+export const removeCategory = asyncHandler(async (req, res) => {
+  try {
+    const removed = await Category.findByIdAndRemove(req.params.categoryId);
+    res.json(removed);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
