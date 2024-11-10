@@ -1,6 +1,11 @@
 import Order from "../models/orderModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Product from "../models/productModel.js";
+import paypal from "@paypal/checkout-server-sdk";
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
+const client = new paypal.core.PayPalHttpClient(environment);
 function calcPrices(orderItems) {
   const itemsPrice = orderItems.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -146,19 +151,26 @@ export const findOrderById = async (req, res) => {
 export const markOrderAsPaid = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-
     if (order) {
-      order.isPaid = true;
-      order.paidAt = Date.now();
-      order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.payer.email_address,
-      };
+      const request = new paypal.orders.OrdersCaptureRequest(req.body.orderID);
+      request.requestBody({});
+      const capture = await client.execute(request);
 
-      const updateOrder = await order.save();
-      res.status(200).json(updateOrder);
+      if (capture.result.status === "COMPLETED") {
+        order.isPaid = true;
+        order.paidAt = Date.now();
+        order.paymentResult = {
+          id: capture.result.id,
+          status: capture.result.status,
+          update_time: capture.result.update_time,
+          email_address: capture.result.payer.email_address,
+        };
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+      } else {
+        res.status(400);
+        throw new Error("Payment not successful");
+      }
     } else {
       res.status(404);
       throw new Error("Order not found");
