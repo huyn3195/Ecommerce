@@ -184,3 +184,12 @@ export const filterProducts = asyncHandler(async (req, res) => {
     res.status(400).json(error.message);
   }
 });
+export const fetchNewProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await Product.find().sort({ _id: -1 }).limit(5);
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json(error.message);
+  }
+});

@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import connectDB from "./config/db.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
 app.use("/order", orderRoutes);
+app.use("/product", productRoutes);
 
 // Serve the React app for all other routes
 app.get("*", (req, res) => {
