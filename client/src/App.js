@@ -7,6 +7,8 @@ import About from "./components/About.js";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
 import Home from "./components/Home.js";
+import Admin from "./components/Admin.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </Router>
     </Fragment>

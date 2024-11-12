@@ -42,10 +42,7 @@ const Navbar = () => {
           </button>
         </form>
         {userInfo && userInfo.isAdmin && (
-          <Link
-            to="/admin-dashboard"
-            className="btn btn-outline-secondary ml-2"
-          >
+          <Link to="/admin" className="btn btn-outline-secondary ml-2">
             Admin Dashboard
           </Link>
         )}
