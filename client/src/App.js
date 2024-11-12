@@ -6,6 +6,7 @@ import Welcome from "./components/ Welcome";
 import About from "./components/About.js";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
+import Home from "./components/Home.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </Router>
     </Fragment>

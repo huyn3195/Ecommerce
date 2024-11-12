@@ -40,7 +40,7 @@ function Login() {
   }
 
   if (userInfo) {
-    return <div> You are logged in as {userInfo.email}</div>; // Display email instead of username
+    navigate("/home");  
   }
 
   return (
