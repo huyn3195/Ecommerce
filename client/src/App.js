@@ -7,7 +7,7 @@ import About from "./components/About.js";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
 import Home from "./components/Home.js";
-import Admin from "./components/Admin.js";
+import Admin from "./components/Admin/Admin.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {

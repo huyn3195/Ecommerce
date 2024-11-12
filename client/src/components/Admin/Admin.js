@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar.js";
+import Navbar from "../Navbar.js";
 
 function Admin() {
   const navigate = useNavigate();
@@ -37,7 +37,10 @@ function Admin() {
           <button className="btn btn-warning btn-lg rounded-pill shadow-sm">
             Order Management
           </button>
-          <button className="btn btn-info btn-lg rounded-pill shadow-sm">
+          <button
+            className="btn btn-info btn-lg rounded-pill shadow-sm"
+            onClick={() => handleNavigation("/admin/category-management")}
+          >
             Category Management
           </button>
         </div>
