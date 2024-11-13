@@ -39,7 +39,7 @@ function Admin() {
           </button>
           <button
             className="btn btn-info btn-lg rounded-pill shadow-sm"
-            onClick={() => handleNavigation("/admin/category-management")}
+            onClick={() => navigate("/admin/category-management")}
           >
             Category Management
           </button>
