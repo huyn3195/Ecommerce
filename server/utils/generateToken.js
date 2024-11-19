@@ -7,10 +7,11 @@ const generateToken = (res, userId) => {
   });
   res.cookie("jwt", token, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "strict" : "lax",
+    secure: isProduction && req.protocol === "https", // Secure only in HTTPS
+    sameSite: isProduction ? "none" : "lax", // For cross-site cookies
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
+
   return token;
 };
 export default generateToken;

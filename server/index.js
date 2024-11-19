@@ -19,16 +19,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  process.env.BACKEND_SERVER,
-];
 
 // Middleware
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000", // Add your frontend URL when deployed
+];
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -39,9 +39,10 @@ app.use(
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 // Serve static files from the public and React build directories
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));

@@ -9,6 +9,7 @@ import Register from "./components/Register.js";
 import Home from "./components/Home.js";
 import Admin from "./components/Admin/Admin.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CategoryAdmin from "./components/Admin/CategoryAdmin.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin/category-management"
+            element={<CategoryAdmin />}
+          />
         </Routes>
       </Router>
     </Fragment>
