@@ -31,6 +31,11 @@ function Register() {
 
     return () => clearInterval(interval);
   }, [dispatch]);
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/home");
+    }
+  }, [userInfo, navigate]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,7 +44,6 @@ function Register() {
     }
     dispatch(register(username, email, password));
   }
-
   function handleLoginRedirect() {
     navigate("/login");
   }
