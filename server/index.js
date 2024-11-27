@@ -19,14 +19,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
+const backendPort = process.env.BACKEND_SERVER;
 // Middleware
-app.use(express.json());
+app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://127.0.0.1:3000", // Add your frontend URL when deployed
+  "http://127.0.0.1:3000",
+  backendPort,
+  "https://526e-140-209-96-105.ngrok-free.app",
+  // Add your frontend URL when deployed
 ];
 
 app.use(
@@ -41,8 +44,11 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Set-Cookie"],
   })
 );
+app.use(cookieParser());
+app.use(express.json());
 // Serve static files from the public and React build directories
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
