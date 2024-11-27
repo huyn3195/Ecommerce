@@ -10,6 +10,7 @@ import Home from "./components/Home.js";
 import Admin from "./components/Admin/Admin.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CategoryAdmin from "./components/Admin/CategoryAdmin.js";
+import UserAdmin from "./components/Admin/UserAdmin.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function App() {
             path="/admin/category-management"
             element={<CategoryAdmin />}
           />
+          <Route path="/admin/user-management" element={<UserAdmin />}></Route>
         </Routes>
       </Router>
     </Fragment>

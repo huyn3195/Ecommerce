@@ -28,7 +28,10 @@ function Admin() {
         </div>
 
         <div className="d-flex flex-column gap-3">
-          <button className="btn btn-success btn-lg rounded-pill shadow-sm">
+          <button
+            className="btn btn-success btn-lg rounded-pill shadow-sm"
+            onClick={() => navigate("/admin/user-management")}
+          >
             User Management
           </button>
           <button className="btn btn-primary btn-lg rounded-pill shadow-sm">

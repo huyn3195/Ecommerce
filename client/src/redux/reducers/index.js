@@ -7,6 +7,7 @@ import {
   categoryListReducer,
   categoryUpdateReducer,
 } from "./categoryReducer.js";
+import { userReducer } from "./userReducer.js";
 
 const rootReducer = combineReducers({
   color: colorReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   categoryList: categoryListReducer,
   categoryUpdate: categoryUpdateReducer,
   categoryDelete: categoryDeleteReducer,
+  user: userReducer,
 });
 
 export default rootReducer;
