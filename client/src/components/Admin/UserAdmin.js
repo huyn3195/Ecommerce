@@ -6,21 +6,42 @@ import {
   deleteUser,
   searchUser,
 } from "../../redux/actions/userAction.js";
+import "../../styles/UserAdmin.css";
+import { changeColor } from "../../redux/actions/colorActions.js";
 
 function UserAdmin() {
   const dispatch = useDispatch();
-  const [userId, setUserId] = useState(""); // Manage user ID input
+  const bgColor = useSelector((state) => state.color.bgColor); // Access bgColor from Redux state
+  const [userId, setUserId] = useState("");
+
+  // Set dynamic background colors
+  useEffect(() => {
+    const colors = [
+      "rgba(255, 99, 132, 0.8)",
+      "rgba(54, 162, 235, 0.8)",
+      "rgba(255, 206, 86, 0.8)",
+      "rgba(75, 192, 192, 0.8)",
+      "rgba(153, 102, 255, 0.8)",
+    ];
+    let index = 0;
+
+    const interval = setInterval(() => {
+      dispatch(changeColor(colors[index % colors.length])); // Dispatch color change
+      index++;
+    }, 2000); // Change color every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [dispatch]);
+
   const [newUserData, setNewUserData] = useState({
     username: "",
     email: "",
     isAdmin: false,
-  }); // Manage user data for edit
+  });
 
-  // Get user data from Redux state
-  const { user, users, loading, error } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // If a user is logged in, fetch their profile
     dispatch(getUserProfile());
   }, [dispatch]);
 
@@ -51,63 +72,82 @@ function UserAdmin() {
   };
 
   return (
-    <div>
-      <h2>User Administration</h2>
-
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <div>
-        <h3>Search User</h3>
-        <input
-          type="text"
-          placeholder="Enter User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-        <button onClick={handleSearchUser}>Search</button>
+    <div className="user-admin" style={{ backgroundColor: bgColor }}>
+      {" "}
+      {/* Apply dynamic background */}
+      <h1 className="user-admin__header">User Administration</h1>
+      {loading && <p className="user-admin__loading">Loading...</p>}
+      {error && <p className="user-admin__error">{error}</p>}
+      {/* Search User Section */}
+      <div className="user-admin__section">
+        <h2>Search User</h2>
+        <div className="user-admin__form">
+          <input
+            type="text"
+            placeholder="Enter User ID"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+          />
+          <button onClick={handleSearchUser}>Search</button>
+        </div>
 
         {user && (
-          <div>
-            <h4>User Profile</h4>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>Admin: {user.isAdmin ? "Yes" : "No"}</p>
+          <div className="user-admin__profile">
+            <h3>User Profile</h3>
+            <p>
+              <strong>Username:</strong> {user.username}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Admin:</strong> {user.isAdmin ? "Yes" : "No"}
+            </p>
+            <button
+              className="user-admin__delete-btn"
+              onClick={() => handleDeleteUser(user._id)}
+            >
+              Delete User
+            </button>
           </div>
         )}
       </div>
-
-      <div>
-        <h3>Edit User</h3>
-        <input
-          type="text"
-          name="username"
-          placeholder="New Username"
-          value={newUserData.username}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="New Email"
-          value={newUserData.email}
-          onChange={handleChange}
-        />
-        <label>
-          Admin:
+      {/* Edit User Section */}
+      <div className="user-admin__section">
+        <h2>Edit User</h2>
+        <div className="user-admin__form">
           <input
-            type="checkbox"
-            name="isAdmin"
-            checked={newUserData.isAdmin}
-            onChange={() =>
-              setNewUserData((prevData) => ({
-                ...prevData,
-                isAdmin: !prevData.isAdmin,
-              }))
-            }
+            type="text"
+            name="username"
+            placeholder="New Username"
+            value={newUserData.username}
+            onChange={handleChange}
           />
-        </label>
-        <button onClick={handleEditUser}>Update User</button>
+          <input
+            type="email"
+            name="email"
+            placeholder="New Email"
+            value={newUserData.email}
+            onChange={handleChange}
+          />
+          <div className="user-admin__checkbox">
+            <label>
+              <input
+                type="checkbox"
+                name="isAdmin"
+                checked={newUserData.isAdmin}
+                onChange={() =>
+                  setNewUserData((prevData) => ({
+                    ...prevData,
+                    isAdmin: !prevData.isAdmin,
+                  }))
+                }
+              />
+              Admin
+            </label>
+          </div>
+          <button onClick={handleEditUser}>Update User</button>
+        </div>
       </div>
     </div>
   );
