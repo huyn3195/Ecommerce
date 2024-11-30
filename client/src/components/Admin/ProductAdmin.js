@@ -9,11 +9,11 @@ import {
 import { getCategories } from "../../redux/actions/categoryAction.js";
 import Loader from "../../components/Loader.js";
 import Message from "../../components/Message.js";
+import "../../styles/ProductAdmin.css"; // Add custom styles
 
 const ProductAdmin = () => {
   const dispatch = useDispatch();
 
-  // Local state for form inputs
   const [search, setSearch] = useState("");
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -24,7 +24,6 @@ const ProductAdmin = () => {
     quantity: "",
   });
 
-  // Selectors
   const { loading, error, products } = useSelector(
     (state) => state.productList
   );
@@ -75,22 +74,26 @@ const ProductAdmin = () => {
   };
 
   return (
-    <div>
-      <h1>Admin Product Management</h1>
+    <div className="product-admin">
+      <h1 className="title">Admin Product Management</h1>
 
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
+      {/* Products Table */}
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <table>
+        <table className="product-table">
           <thead>
             <tr>
               <th>Name</th>
@@ -108,10 +111,16 @@ const ProductAdmin = () => {
                 <td>{product.category?.name || "No Category"}</td>
                 <td>${product.price}</td>
                 <td>
-                  <button onClick={() => updateHandler(product._id)}>
+                  <button
+                    className="btn update"
+                    onClick={() => updateHandler(product._id)}
+                  >
                     Update
                   </button>
-                  <button onClick={() => deleteHandler(product._id)}>
+                  <button
+                    className="btn delete"
+                    onClick={() => deleteHandler(product._id)}
+                  >
                     Delete
                   </button>
                 </td>
@@ -121,68 +130,73 @@ const ProductAdmin = () => {
         </table>
       )}
 
-      <div>
+      {/* Add Product Form */}
+      <div className="add-product-form">
         <h2>Add New Product</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={newProduct.name}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, name: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Brand"
-          value={newProduct.brand}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, brand: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={newProduct.description}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, description: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={newProduct.price}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, price: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={newProduct.quantity}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, quantity: e.target.value })
-          }
-        />
-        {loadingCategories ? (
-          <Loader />
-        ) : errorCategories ? (
-          <Message variant="danger">{errorCategories}</Message>
-        ) : (
-          <select
-            value={newProduct.category}
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Name"
+            value={newProduct.name}
             onChange={(e) =>
-              setNewProduct({ ...newProduct, category: e.target.value })
+              setNewProduct({ ...newProduct, name: e.target.value })
             }
-          >
-            <option value="">Select Category</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        )}
-        <button onClick={addHandler}>Add Product</button>
+          />
+          <input
+            type="text"
+            placeholder="Brand"
+            value={newProduct.brand}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, brand: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={newProduct.description}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, description: e.target.value })
+            }
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={newProduct.price}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, price: e.target.value })
+            }
+          />
+          <input
+            type="number"
+            placeholder="Quantity"
+            value={newProduct.quantity}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, quantity: e.target.value })
+            }
+          />
+          {loadingCategories ? (
+            <Loader />
+          ) : errorCategories ? (
+            <Message variant="danger">{errorCategories}</Message>
+          ) : (
+            <select
+              value={newProduct.category}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, category: e.target.value })
+              }
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+        <button className="btn add" onClick={addHandler}>
+          Add Product
+        </button>
       </div>
     </div>
   );
