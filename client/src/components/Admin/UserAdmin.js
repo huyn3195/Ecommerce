@@ -8,6 +8,7 @@ import {
 } from "../../redux/actions/userAction.js";
 import "../../styles/UserAdmin.css";
 import { changeColor } from "../../redux/actions/colorActions.js";
+import Navbar from "../Navbar.js";
 
 function UserAdmin() {
   const dispatch = useDispatch();
@@ -73,8 +74,7 @@ function UserAdmin() {
 
   return (
     <div className="user-admin" style={{ backgroundColor: bgColor }}>
-      {" "}
-      {/* Apply dynamic background */}
+      <Navbar /> {/* Apply dynamic background */}
       <h1 className="user-admin__header">User Administration</h1>
       {loading && <p className="user-admin__loading">Loading...</p>}
       {error && <p className="user-admin__error">{error}</p>}

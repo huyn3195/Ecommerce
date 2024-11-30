@@ -10,6 +10,7 @@ import { getCategories } from "../../redux/actions/categoryAction.js";
 import Loader from "../../components/Loader.js";
 import Message from "../../components/Message.js";
 import "../../styles/ProductAdmin.css"; // Add custom styles
+import Navbar from "../Navbar.js";
 
 const ProductAdmin = () => {
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ const ProductAdmin = () => {
 
   return (
     <div className="product-admin">
+      <Navbar />
       <h1 className="title">Admin Product Management</h1>
 
       {/* Search Bar */}

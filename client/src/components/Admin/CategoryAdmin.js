@@ -8,7 +8,7 @@ import {
 } from "../../redux/actions/categoryAction.js";
 import "../../styles/CategoryAdmin.css";
 import { changeColor } from "../../redux/actions/colorActions.js";
-
+import Navbar from "../Navbar.js";
 function CategoryAdmin() {
   const dispatch = useDispatch();
 
@@ -80,6 +80,7 @@ function CategoryAdmin() {
 
   return (
     <div className="category-admin">
+      <Navbar />
       <div
         style={{
           backgroundColor: bgColor,
