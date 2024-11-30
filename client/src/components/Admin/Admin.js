@@ -34,7 +34,10 @@ function Admin() {
           >
             User Management
           </button>
-          <button className="btn btn-primary btn-lg rounded-pill shadow-sm">
+          <button
+            className="btn btn-primary btn-lg rounded-pill shadow-sm"
+            onClick={() => navigate("/admin/product-management")}
+          >
             Product Management
           </button>
           <button className="btn btn-warning btn-lg rounded-pill shadow-sm">
