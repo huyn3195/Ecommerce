@@ -20,6 +20,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const backendPort = process.env.BACKEND_SERVER;
+
 // Middleware
 app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,7 +50,9 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-// Serve static files from the public and React build directories
+
+// Serve static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploads folder
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "../client/build")));

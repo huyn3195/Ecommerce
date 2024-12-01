@@ -9,13 +9,16 @@ import {
 import { getCategories } from "../../redux/actions/categoryAction.js";
 import Loader from "../../components/Loader.js";
 import Message from "../../components/Message.js";
-import "../../styles/ProductAdmin.css"; // Add custom styles
+import "../../styles/ProductAdmin.css";
 import Navbar from "../Navbar.js";
+
+import axiosInstance from "../../axiosConfig.js";
 
 const ProductAdmin = () => {
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -23,6 +26,7 @@ const ProductAdmin = () => {
     price: "",
     category: "",
     quantity: "",
+    image: "", // Add image field
   });
 
   const { loading, error, products } = useSelector(
@@ -57,13 +61,47 @@ const ProductAdmin = () => {
     }
   };
 
-  const addHandler = () => {
+  const handleImageUpload = async () => {
+    if (!imageFile) {
+      alert("Please select an image first");
+      return null;
+    }
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    try {
+      const { data } = await axiosInstance.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return data.image; // Returns the path of the uploaded image
+    } catch (error) {
+      console.error("Image upload error:", error);
+      alert("Image upload failed");
+      return null;
+    }
+  };
+
+  const addHandler = async () => {
+    // Upload image first if present
+    let imagePath = "";
+    if (imageFile) {
+      imagePath = await handleImageUpload();
+      if (!imagePath) return; // Stop if image upload fails
+    }
+
     const productData = {
       ...newProduct,
       price: Number(newProduct.price),
       quantity: Number(newProduct.quantity),
+      image: imagePath, // Add image path to product data
     };
+
     dispatch(addProduct(productData));
+
+    // Reset form
     setNewProduct({
       name: "",
       brand: "",
@@ -71,7 +109,14 @@ const ProductAdmin = () => {
       price: "",
       category: "",
       quantity: "",
+      image: "",
     });
+    setImageFile(null);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
   };
 
   return (
@@ -176,6 +221,22 @@ const ProductAdmin = () => {
               setNewProduct({ ...newProduct, quantity: e.target.value })
             }
           />
+          {/* Image Upload Input */}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleImageChange}
+            className="image-upload"
+          />
+          {imageFile && (
+            <div className="image-preview">
+              <img
+                src={URL.createObjectURL(imageFile)}
+                alt="Preview"
+                style={{ maxWidth: "200px", maxHeight: "200px" }}
+              />
+            </div>
+          )}
           {loadingCategories ? (
             <Loader />
           ) : errorCategories ? (

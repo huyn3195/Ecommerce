@@ -60,3 +60,5 @@ coverage/
 
 # React Native
 .expo/
+server/uploads/
+
