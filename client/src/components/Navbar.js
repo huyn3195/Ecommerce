@@ -46,6 +46,9 @@ const Navbar = () => {
             Admin Dashboard
           </Link>
         )}
+        <Link to="/products" className="btn btn-outline-secondary ml-2">
+          Product List
+        </Link>
       </div>
     </nav>
   );

@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CategoryAdmin from "./components/Admin/CategoryAdmin.js";
 import UserAdmin from "./components/Admin/UserAdmin.js";
 import ProductAdmin from "./components/Admin/ProductAdmin.js";
+import ProductListPage from "./components/Product.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function App() {
             element={<ProductAdmin />}
           ></Route>
           <Route path="/admin/user-management" element={<UserAdmin />}></Route>
+          <Route path="/products" element={<ProductListPage />}></Route>
         </Routes>
       </Router>
     </Fragment>

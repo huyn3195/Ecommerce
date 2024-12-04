@@ -11,6 +11,7 @@ import Loader from "../../components/Loader.js";
 import Message from "../../components/Message.js";
 import "../../styles/ProductAdmin.css";
 import Navbar from "../Navbar.js";
+import { changeColor } from "../../redux/actions/colorActions.js";
 
 import axiosInstance from "../../axiosConfig.js";
 
@@ -19,6 +20,25 @@ const ProductAdmin = () => {
 
   const [search, setSearch] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const bgColor = useSelector((state) => state.color.bgColor);
+  useEffect(() => {
+    const colors = [
+      "rgba(255, 99, 132, 0.8)",
+      "rgba(54, 162, 235, 0.8)",
+      "rgba(255, 206, 86, 0.8)",
+      "rgba(75, 192, 192, 0.8)",
+      "rgba(153, 102, 255, 0.8)",
+    ];
+    let index = 0;
+
+    const interval = setInterval(() => {
+      dispatch(changeColor(colors[index % colors.length]));
+      index++;
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -122,6 +142,12 @@ const ProductAdmin = () => {
   return (
     <div className="product-admin">
       <Navbar />
+      <div
+        style={{
+          backgroundColor: bgColor,
+          transition: "background-color 0.5s",
+        }}
+      ></div>
       <h1 className="title">Admin Product Management</h1>
 
       {/* Search Bar */}
